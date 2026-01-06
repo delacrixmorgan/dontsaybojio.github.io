@@ -21,18 +21,18 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
+            // Common Compose UI dependencies
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
-            implementation(libs.androidx.lifecycle.viewmodelCompose)
-            implementation(libs.androidx.lifecycle.runtimeCompose)
-
-            implementation(libs.navigation.compose)
-            implementation(libs.jetbrains.serialization.json)
+            
+            // Common library dependencies (bundled)
+            implementation(libs.bundles.common.compose)
         }
+        
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }
