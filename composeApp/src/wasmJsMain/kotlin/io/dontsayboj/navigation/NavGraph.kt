@@ -14,10 +14,10 @@ import io.dontsayboj.screens.WhoadunitScreen
 fun NavGraph(navHostController: NavHostController = rememberNavController()) {
     // Integrate browser history with navigation
     BrowserHistoryIntegration(navHostController)
-    
+
     NavHost(
         navController = navHostController,
-        startDestination = Routes.Landing.route
+        startDestination = Routes.Landing.route,
     ) {
         formGraph(navHostController)
     }

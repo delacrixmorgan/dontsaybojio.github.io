@@ -46,6 +46,11 @@ fun LandingScreen(
                         Text("Whoadunit")
                     }
                 }
+                Spacer(Modifier.height(48.dp))
+                Text(
+                    "Made by Delacrix Morgan with ❤\uFE0F",
+                    textAlign = TextAlign.Center
+                )
             }
         }
     }
