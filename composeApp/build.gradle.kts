@@ -5,14 +5,10 @@ plugins {
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.composeHotReload)
 }
 
 kotlin {
-    js {
-        browser()
-        binaries.executable()
-    }
-
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
         browser()
@@ -23,7 +19,7 @@ kotlin {
         commonMain.dependencies {
             // Module-specific dependencies
             implementation(project(":birthdays"))
-            
+
             // Common Compose UI dependencies
             implementation(compose.runtime)
             implementation(compose.foundation)
@@ -31,13 +27,9 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
-            
+
             // Common library dependencies (bundled)
             implementation(libs.bundles.common.compose)
-        }
-        
-        commonTest.dependencies {
-            implementation(libs.kotlin.test)
         }
     }
 }
