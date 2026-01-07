@@ -18,10 +18,11 @@ class GenerateICSUseCase {
 
     operator fun invoke(
         birthdays: List<Birthday>,
-        config: EventConfig
+        config: EventConfig,
+        targetYear: Int,
     ): String {
         val events = when (config) {
-            is EventConfig.WithAge -> generateWithAge(birthdays, config.year)
+            is EventConfig.WithAge -> generateWithAge(birthdays, targetYear)
             is EventConfig.Recurring -> generateRecurring(birthdays)
         }
         return buildICSContent(events)

@@ -22,15 +22,15 @@ class BirthdaysViewModel : ViewModel() {
     private val generateIcsUseCase: GenerateICSUseCase by lazy { GenerateICSUseCase() }
 
     private var currentBirthdays: List<Birthday> = emptyList()
-    private var currentConfig: EventConfig = EventConfig.WithAge(LocalDateTime.currentYear())
-    private var selectedYear: Int = LocalDateTime.currentYear()
+    private var currentConfig: EventConfig = EventConfig.WithAge
+    private var targetYear: Int = LocalDateTime.currentYear()
 
     fun onAction(action: BirthdaysAction) {
         viewModelScope.launch {
             when (action) {
-                is BirthdaysAction.FileSelected -> handleFileSelected(action.content)
-                is BirthdaysAction.EventConfigSelected -> handleEventConfigSelected(action.config)
-                is BirthdaysAction.YearSelected -> handleYearSelected(action.year)
+                is BirthdaysAction.OnFileSelected -> handleFileSelected(action.content)
+                is BirthdaysAction.OnEventConfigSelected -> handleEventConfigSelected(action.config)
+                is BirthdaysAction.OnYearSelected -> handleYearSelected(action.year)
                 is BirthdaysAction.GenerateCalendar -> handleGenerateCalendar()
                 is BirthdaysAction.DownloadFile -> handleDownloadFile()
                 is BirthdaysAction.StartAgain -> handleStartAgain()
@@ -48,7 +48,7 @@ class BirthdaysViewModel : ViewModel() {
                 _state.value = BirthdaysUiState.Overview(
                     birthdays = birthdays,
                     selectedConfig = currentConfig,
-                    selectedYear = selectedYear
+                    selectedYear = targetYear
                 )
             }
         } catch (e: Exception) {
@@ -66,7 +66,7 @@ class BirthdaysViewModel : ViewModel() {
     }
 
     private fun handleYearSelected(year: Int) {
-        selectedYear = year
+        targetYear = year
 
         val currentState = _state.value
         if (currentState is BirthdaysUiState.Overview) {
@@ -76,7 +76,7 @@ class BirthdaysViewModel : ViewModel() {
 
     private fun handleGenerateCalendar() {
         try {
-            val icsContent = generateIcsUseCase(currentBirthdays, currentConfig)
+            val icsContent = generateIcsUseCase(currentBirthdays, currentConfig, targetYear)
             _state.value = BirthdaysUiState.Done(icsContent = icsContent)
         } catch (e: Exception) {
             _state.value = BirthdaysUiState.Error("Error generating calendar: ${e.message}")
@@ -90,8 +90,8 @@ class BirthdaysViewModel : ViewModel() {
 
     private fun handleStartAgain() {
         currentBirthdays = emptyList()
-        currentConfig = EventConfig.WithAge(LocalDateTime.currentYear())
-        selectedYear = LocalDateTime.currentYear()
+        currentConfig = EventConfig.WithAge
+        targetYear = LocalDateTime.currentYear()
         _state.value = BirthdaysUiState.Upload
     }
 }
@@ -116,9 +116,9 @@ sealed class BirthdaysUiState {
 }
 
 sealed interface BirthdaysAction {
-    data class FileSelected(val content: String) : BirthdaysAction
-    data class EventConfigSelected(val config: EventConfig) : BirthdaysAction
-    data class YearSelected(val year: Int) : BirthdaysAction
+    data class OnFileSelected(val content: String) : BirthdaysAction
+    data class OnEventConfigSelected(val config: EventConfig) : BirthdaysAction
+    data class OnYearSelected(val year: Int) : BirthdaysAction
     data object GenerateCalendar : BirthdaysAction
     data object DownloadFile : BirthdaysAction
     data object StartAgain : BirthdaysAction

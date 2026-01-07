@@ -46,7 +46,7 @@ fun UploadScreen(
             onDragEnter = { isDragging = true },
             onDragLeave = { isDragging = false },
             onFileDrop = { content ->
-                onIntent(BirthdaysAction.FileSelected(content))
+                onIntent(BirthdaysAction.OnFileSelected(content))
             }
         )
 
@@ -147,7 +147,7 @@ fun UploadScreen(
         Button(
             onClick = {
                 fileHandler.pickFile { content ->
-                    onIntent(BirthdaysAction.FileSelected(content))
+                    onIntent(BirthdaysAction.OnFileSelected(content))
                 }
             },
             modifier = Modifier

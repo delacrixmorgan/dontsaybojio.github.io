@@ -108,7 +108,7 @@ fun OverviewScreen(
                     }
                 ),
                 onClick = {
-                    onIntent(BirthdaysAction.EventConfigSelected(EventConfig.WithAge(selectedYear)))
+                    onIntent(BirthdaysAction.OnEventConfigSelected(EventConfig.WithAge))
                 }
             ) {
                 Column(
@@ -120,7 +120,7 @@ fun OverviewScreen(
                         RadioButton(
                             selected = selectedConfig is EventConfig.WithAge,
                             onClick = {
-                                onIntent(BirthdaysAction.EventConfigSelected(EventConfig.WithAge(selectedYear)))
+                                onIntent(BirthdaysAction.OnEventConfigSelected(EventConfig.WithAge))
                             }
                         )
                         Spacer(modifier = Modifier.width(8.dp))
@@ -178,7 +178,7 @@ fun OverviewScreen(
                                     DropdownMenuItem(
                                         text = { Text(year.toString()) },
                                         onClick = {
-                                            onIntent(BirthdaysAction.YearSelected(year))
+                                            onIntent(BirthdaysAction.OnYearSelected(year))
                                             expanded = false
                                         }
                                     )
@@ -204,7 +204,7 @@ fun OverviewScreen(
                     }
                 ),
                 onClick = {
-                    onIntent(BirthdaysAction.EventConfigSelected(EventConfig.Recurring))
+                    onIntent(BirthdaysAction.OnEventConfigSelected(EventConfig.Recurring))
                 }
             ) {
                 Column(
@@ -216,7 +216,7 @@ fun OverviewScreen(
                         RadioButton(
                             selected = selectedConfig is EventConfig.Recurring,
                             onClick = {
-                                onIntent(BirthdaysAction.EventConfigSelected(EventConfig.Recurring))
+                                onIntent(BirthdaysAction.OnEventConfigSelected(EventConfig.Recurring))
                             }
                         )
                         Spacer(modifier = Modifier.width(8.dp))
