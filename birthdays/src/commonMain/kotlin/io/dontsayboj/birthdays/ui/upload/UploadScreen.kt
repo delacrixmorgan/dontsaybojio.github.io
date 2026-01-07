@@ -1,11 +1,12 @@
 package io.dontsayboj.birthdays.ui.upload
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -18,6 +19,40 @@ fun UploadScreen(
     onIntent: (BirthdaysIntent) -> Unit,
     fileHandler: FileHandler
 ) {
+    var isDragging by remember { mutableStateOf(false) }
+    
+    // Setup drag and drop
+    DisposableEffect(Unit) {
+        fileHandler.setupDragAndDrop(
+            onDragEnter = { isDragging = true },
+            onDragLeave = { isDragging = false },
+            onFileDrop = { content ->
+                onIntent(BirthdaysIntent.FileSelected(content))
+            }
+        )
+        
+        onDispose {
+            fileHandler.cleanup()
+        }
+    }
+    
+    // Animate colors based on drag state
+    val borderColor by animateColorAsState(
+        targetValue = if (isDragging) {
+            MaterialTheme.colorScheme.primary
+        } else {
+            MaterialTheme.colorScheme.primary
+        }
+    )
+    
+    val backgroundColor by animateColorAsState(
+        targetValue = if (isDragging) {
+            MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f)
+        } else {
+            MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f)
+        }
+    )
+    
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -48,12 +83,12 @@ fun UploadScreen(
                 .fillMaxWidth()
                 .height(200.dp)
                 .border(
-                    width = 2.dp,
-                    color = MaterialTheme.colorScheme.primary,
+                    width = if (isDragging) 3.dp else 2.dp,
+                    color = borderColor,
                     shape = RoundedCornerShape(12.dp)
                 )
                 .background(
-                    color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f),
+                    color = backgroundColor,
                     shape = RoundedCornerShape(12.dp)
                 ),
             contentAlignment = Alignment.Center
@@ -68,9 +103,18 @@ fun UploadScreen(
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
-                    text = "Click the button below to select a VCF file",
+                    text = if (isDragging) {
+                        "Drop your VCF file here!"
+                    } else {
+                        "Drag & drop a VCF file here\nor click the button below"
+                    },
                     style = MaterialTheme.typography.bodyMedium,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    color = if (isDragging) {
+                        MaterialTheme.colorScheme.primary
+                    } else {
+                        MaterialTheme.colorScheme.onSurfaceVariant
+                    }
                 )
             }
         }
