@@ -27,15 +27,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import io.dontsayboj.birthdays.platform.FileHandler
-import io.dontsayboj.birthdays.presentation.BirthdaysIntent
+import io.dontsayboj.birthdays.ui.BirthdaysAction
 import io.dontsayboj.birthdays.theme.notoColorEmojiFontFamily
+import io.dontsayboj.birthdays.util.appendEmoji
 
 @Composable
 fun UploadScreen(
-    onIntent: (BirthdaysIntent) -> Unit,
+    onIntent: (BirthdaysAction) -> Unit,
     fileHandler: FileHandler
 ) {
     var isDragging by remember { mutableStateOf(false) }
@@ -46,7 +46,7 @@ fun UploadScreen(
             onDragEnter = { isDragging = true },
             onDragLeave = { isDragging = false },
             onFileDrop = { content ->
-                onIntent(BirthdaysIntent.FileSelected(content))
+                onIntent(BirthdaysAction.FileSelected(content))
             }
         )
 
@@ -81,9 +81,7 @@ fun UploadScreen(
     ) {
         Text(
             text = buildAnnotatedString {
-                withStyle(style = MaterialTheme.typography.headlineLarge.copy(fontFamily = notoColorEmojiFontFamily).toSpanStyle()) {
-                    append("📤")
-                }
+                appendEmoji("📤", MaterialTheme.typography.headlineLarge)
                 append(" ")
                 append("Upload VCF File")
             },
@@ -149,7 +147,7 @@ fun UploadScreen(
         Button(
             onClick = {
                 fileHandler.pickFile { content ->
-                    onIntent(BirthdaysIntent.FileSelected(content))
+                    onIntent(BirthdaysAction.FileSelected(content))
                 }
             },
             modifier = Modifier
@@ -177,9 +175,7 @@ fun UploadScreen(
             ) {
                 Text(
                     text = buildAnnotatedString {
-                        withStyle(style = MaterialTheme.typography.titleMedium.copy(fontFamily = notoColorEmojiFontFamily).toSpanStyle()) {
-                            append("ℹ️")
-                        }
+                        appendEmoji("ℹ️", MaterialTheme.typography.titleMedium)
                         append(" ")
                         append("How to use:")
                     },

@@ -7,7 +7,7 @@ import kotlin.test.assertTrue
 
 class ParseVcfUseCaseTest {
 
-    private val useCase = ParseVcfUseCase()
+    private val useCase = ParseVCFUseCase()
 
     // ==================== Basic Parsing Tests ====================
 

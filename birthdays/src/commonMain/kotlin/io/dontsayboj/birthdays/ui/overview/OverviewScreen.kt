@@ -16,6 +16,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuAnchorType
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.MaterialTheme
@@ -31,12 +32,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import io.dontsayboj.birthdays.domain.model.Birthday
 import io.dontsayboj.birthdays.domain.model.EventConfig
-import io.dontsayboj.birthdays.presentation.BirthdaysIntent
-import io.dontsayboj.birthdays.theme.notoColorEmojiFontFamily
+import io.dontsayboj.birthdays.ui.BirthdaysAction
+import io.dontsayboj.birthdays.util.appendEmoji
+import io.dontsayboj.birthdays.util.currentYear
+import kotlinx.datetime.LocalDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -44,10 +46,10 @@ fun OverviewScreen(
     birthdays: List<Birthday>,
     selectedConfig: EventConfig,
     selectedYear: Int,
-    onIntent: (BirthdaysIntent) -> Unit
+    onIntent: (BirthdaysAction) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
-    val years = (2026..2026 + 10).toList()
+    val years = (LocalDateTime.currentYear()..LocalDateTime.currentYear() + 10).toList()
 
     LazyColumn(
         modifier = Modifier
@@ -58,9 +60,7 @@ fun OverviewScreen(
         item {
             Text(
                 text = buildAnnotatedString {
-                    withStyle(style = MaterialTheme.typography.headlineLarge.copy(fontFamily = notoColorEmojiFontFamily).toSpanStyle()) {
-                        append("🎉")
-                    }
+                    appendEmoji("🎉", MaterialTheme.typography.headlineLarge)
                     append(" ")
                     append("Birthdays Detected")
                 },
@@ -108,7 +108,7 @@ fun OverviewScreen(
                     }
                 ),
                 onClick = {
-                    onIntent(BirthdaysIntent.EventConfigSelected(EventConfig.WithAge(selectedYear)))
+                    onIntent(BirthdaysAction.EventConfigSelected(EventConfig.WithAge(selectedYear)))
                 }
             ) {
                 Column(
@@ -120,7 +120,7 @@ fun OverviewScreen(
                         RadioButton(
                             selected = selectedConfig is EventConfig.WithAge,
                             onClick = {
-                                onIntent(BirthdaysIntent.EventConfigSelected(EventConfig.WithAge(selectedYear)))
+                                onIntent(BirthdaysAction.EventConfigSelected(EventConfig.WithAge(selectedYear)))
                             }
                         )
                         Spacer(modifier = Modifier.width(8.dp))
@@ -164,7 +164,10 @@ fun OverviewScreen(
                                 },
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .menuAnchor()
+                                    .menuAnchor(
+                                        type = ExposedDropdownMenuAnchorType.PrimaryNotEditable,
+                                        enabled = true
+                                    )
                             )
 
                             ExposedDropdownMenu(
@@ -175,7 +178,7 @@ fun OverviewScreen(
                                     DropdownMenuItem(
                                         text = { Text(year.toString()) },
                                         onClick = {
-                                            onIntent(BirthdaysIntent.YearSelected(year))
+                                            onIntent(BirthdaysAction.YearSelected(year))
                                             expanded = false
                                         }
                                     )
@@ -201,7 +204,7 @@ fun OverviewScreen(
                     }
                 ),
                 onClick = {
-                    onIntent(BirthdaysIntent.EventConfigSelected(EventConfig.Recurring))
+                    onIntent(BirthdaysAction.EventConfigSelected(EventConfig.Recurring))
                 }
             ) {
                 Column(
@@ -213,7 +216,7 @@ fun OverviewScreen(
                         RadioButton(
                             selected = selectedConfig is EventConfig.Recurring,
                             onClick = {
-                                onIntent(BirthdaysIntent.EventConfigSelected(EventConfig.Recurring))
+                                onIntent(BirthdaysAction.EventConfigSelected(EventConfig.Recurring))
                             }
                         )
                         Spacer(modifier = Modifier.width(8.dp))
@@ -317,7 +320,7 @@ fun OverviewScreen(
 
             Button(
                 onClick = {
-                    onIntent(BirthdaysIntent.GenerateCalendar)
+                    onIntent(BirthdaysAction.GenerateCalendar)
                 },
                 modifier = Modifier
                     .fillMaxWidth()

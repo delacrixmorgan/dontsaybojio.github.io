@@ -2,7 +2,7 @@ package io.dontsayboj.birthdays.domain.usecase
 
 import io.dontsayboj.birthdays.domain.model.Birthday
 
-class ParseVcfUseCase {
+class ParseVCFUseCase {
     
     operator fun invoke(vcfContent: String): List<Birthday> {
         val birthdays = mutableListOf<Birthday>()
@@ -75,7 +75,7 @@ class ParseVcfUseCase {
                 cleaned.length == 8 && cleaned.all { it.isDigit() } -> {
                     Birthday(
                         name = "",
-                        year = cleaned.substring(0, 4).toInt(),
+                        year = cleaned.take(4).toInt(),
                         month = cleaned.substring(4, 6).toInt(),
                         day = cleaned.substring(6, 8).toInt()
                     )
@@ -84,7 +84,7 @@ class ParseVcfUseCase {
                 cleaned.length == 4 && cleaned.all { it.isDigit() } -> {
                     Birthday(
                         name = "",
-                        month = cleaned.substring(0, 2).toInt(),
+                        month = cleaned.take(2).toInt(),
                         day = cleaned.substring(2, 4).toInt(),
                         year = null
                     )

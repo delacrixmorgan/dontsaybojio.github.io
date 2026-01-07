@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalWasmJsInterop::class)
+
 package io.dontsayboj.birthdays.platform
 
 import kotlinx.browser.document

@@ -1,5 +1,6 @@
 package io.dontsayboj.util
 
+import io.dontsayboj.navigation.Routes
 import kotlinx.browser.document
 
 /**
@@ -17,9 +18,8 @@ fun setDocumentTitle(title: String) {
  */
 fun getTitleForRoute(route: String): String {
     return when (route) {
-        "/" -> "Don't Say Bojio"
-        "/birthdays" -> "Birthdays - Don't Say Bojio"
-        "/whoadunit" -> "Whoadunit - Don't Say Bojio"
-        else -> "Don't Say Bojio"
+        Routes.Landing.route -> Routes.Landing.title
+        Routes.Birthdays.route -> Routes.Birthdays.title
+        else -> Routes.Landing.title
     }
 }

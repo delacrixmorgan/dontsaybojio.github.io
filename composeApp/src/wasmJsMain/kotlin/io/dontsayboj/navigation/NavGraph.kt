@@ -9,9 +9,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import io.dontsayboj.birthdays.BirthdaysScreen
+import io.dontsayboj.birthdays.ui.BirthdaysScreen
 import io.dontsayboj.screens.LandingScreen
-import io.dontsayboj.screens.WhoadunitScreen
 import io.dontsayboj.util.getTitleForRoute
 import io.dontsayboj.util.setDocumentTitle
 
@@ -43,16 +42,10 @@ fun NavGraphBuilder.formGraph(navHostController: NavHostController) {
     composable(Routes.Landing.route) {
         LandingScreen(
             onNavigateToBirthdays = { navHostController.navigate(Routes.Birthdays.route) },
-            onNavigateToWhoadunit = { navHostController.navigate(Routes.Whoadunit.route) }
         )
     }
     composable(Routes.Birthdays.route) {
         BirthdaysScreen(
-            onNavigateBack = { navHostController.popBackStack() }
-        )
-    }
-    composable(Routes.Whoadunit.route) {
-        WhoadunitScreen(
             onNavigateBack = { navHostController.popBackStack() }
         )
     }

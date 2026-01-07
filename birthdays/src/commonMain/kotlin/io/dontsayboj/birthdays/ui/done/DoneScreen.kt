@@ -22,17 +22,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import io.dontsayboj.birthdays.platform.FileHandler
-import io.dontsayboj.birthdays.presentation.BirthdaysIntent
+import io.dontsayboj.birthdays.ui.BirthdaysAction
 import io.dontsayboj.birthdays.theme.notoColorEmojiFontFamily
+import io.dontsayboj.birthdays.util.appendEmoji
 
 @Composable
 fun DoneScreen(
     icsContent: String,
     fileName: String,
-    onIntent: (BirthdaysIntent) -> Unit,
+    onIntent: (BirthdaysAction) -> Unit,
     fileHandler: FileHandler
 ) {
     Column(
@@ -44,9 +44,7 @@ fun DoneScreen(
     ) {
         Text(
             text = buildAnnotatedString {
-                withStyle(style = MaterialTheme.typography.headlineLarge.copy(fontFamily = notoColorEmojiFontFamily).toSpanStyle()) {
-                    append("✅")
-                }
+                appendEmoji("✅", MaterialTheme.typography.headlineLarge)
                 append(" ")
                 append("Calendar Generated!")
             },
@@ -98,9 +96,7 @@ fun DoneScreen(
             ) {
                 Text(
                     text = buildAnnotatedString {
-                        withStyle(style = MaterialTheme.typography.titleMedium.copy(fontFamily = notoColorEmojiFontFamily).toSpanStyle()) {
-                            append("ℹ️")
-                        }
+                        appendEmoji("ℹ️", MaterialTheme.typography.titleMedium)
                         append(" ")
                         append("Next Steps:")
                     },
@@ -110,14 +106,13 @@ fun DoneScreen(
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = buildAnnotatedString {
-                        append("1. Click the download button below\n" +
-                                "2. Open the downloaded .ics file\n" +
-                                "3. Import it into your calendar app\n" +
-                                "4. Never miss a birthday again! ")
-
-                        withStyle(style = MaterialTheme.typography.bodyMedium.copy(fontFamily = notoColorEmojiFontFamily).toSpanStyle()) {
-                            append("🥳")
-                        }
+                        append(
+                            "1. Click the download button below\n" +
+                                    "2. Open the downloaded .ics file\n" +
+                                    "3. Import it into your calendar app\n" +
+                                    "4. Never miss a birthday again! "
+                        )
+                        appendEmoji("🥳", MaterialTheme.typography.bodyMedium)
                     },
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSecondaryContainer
@@ -151,7 +146,7 @@ fun DoneScreen(
         // Start Again Button
         OutlinedButton(
             onClick = {
-                onIntent(BirthdaysIntent.StartAgain)
+                onIntent(BirthdaysAction.StartAgain)
             },
             modifier = Modifier
                 .fillMaxWidth()

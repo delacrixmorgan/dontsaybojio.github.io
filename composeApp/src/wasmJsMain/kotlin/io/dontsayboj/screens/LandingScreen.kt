@@ -21,7 +21,6 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun LandingScreen(
     onNavigateToBirthdays: () -> Unit = {},
-    onNavigateToWhoadunit: () -> Unit = {}
 ) {
     MaterialTheme {
         Box(
@@ -42,13 +41,10 @@ fun LandingScreen(
                     Button(onClick = { onNavigateToBirthdays() }) {
                         Text("Birthdays")
                     }
-                    Button(onClick = { onNavigateToWhoadunit() }) {
-                        Text("Whoadunit")
-                    }
                 }
                 Spacer(Modifier.height(48.dp))
                 Text(
-                    "Made by Delacrix Morgan with ❤\uFE0F",
+                    "Made by Delacrix Morgan",
                     textAlign = TextAlign.Center
                 )
             }
