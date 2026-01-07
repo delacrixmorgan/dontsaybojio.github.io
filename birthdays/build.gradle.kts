@@ -8,6 +8,12 @@ plugins {
     alias(libs.plugins.composeHotReload)
 }
 
+compose.resources {
+    publicResClass = true
+    packageOfResClass = "dontsaybojio.birthdays.generated.resources"
+    generateResClass = always
+}
+
 kotlin {
     jvm()
 

@@ -23,6 +23,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import io.dontsayboj.birthdays.platform.FileHandler
 import io.dontsayboj.birthdays.presentation.BirthdaysState
 import io.dontsayboj.birthdays.presentation.BirthdaysViewModel
+import io.dontsayboj.birthdays.theme.BirthdaysTheme
 import io.dontsayboj.birthdays.ui.done.DoneScreen
 import io.dontsayboj.birthdays.ui.overview.OverviewScreen
 import io.dontsayboj.birthdays.ui.upload.UploadScreen
@@ -35,7 +36,7 @@ fun BirthdaysScreen(
     val state by viewModel.state.collectAsState()
     val fileHandler = remember { FileHandler() }
 
-    MaterialTheme {
+    BirthdaysTheme {
         Scaffold { paddingValues ->
             Box(
                 modifier = Modifier

@@ -39,7 +39,6 @@ class BirthdaysViewModel(
     private fun handleFileSelected(content: String) {
         try {
             val birthdays = parseVcfUseCase(content)
-
             if (birthdays.isEmpty()) {
                 _state.value = BirthdaysState.Error("No birthdays found in the VCF file")
             } else {

@@ -3,16 +3,35 @@ package io.dontsayboj.birthdays.ui.upload
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import io.dontsayboj.birthdays.platform.FileHandler
 import io.dontsayboj.birthdays.presentation.BirthdaysIntent
+import io.dontsayboj.birthdays.theme.notoColorEmojiFontFamily
 
 @Composable
 fun UploadScreen(
@@ -20,7 +39,7 @@ fun UploadScreen(
     fileHandler: FileHandler
 ) {
     var isDragging by remember { mutableStateOf(false) }
-    
+
     // Setup drag and drop
     DisposableEffect(Unit) {
         fileHandler.setupDragAndDrop(
@@ -30,12 +49,12 @@ fun UploadScreen(
                 onIntent(BirthdaysIntent.FileSelected(content))
             }
         )
-        
+
         onDispose {
             fileHandler.cleanup()
         }
     }
-    
+
     // Animate colors based on drag state
     val borderColor by animateColorAsState(
         targetValue = if (isDragging) {
@@ -44,7 +63,7 @@ fun UploadScreen(
             MaterialTheme.colorScheme.primary
         }
     )
-    
+
     val backgroundColor by animateColorAsState(
         targetValue = if (isDragging) {
             MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f)
@@ -52,7 +71,7 @@ fun UploadScreen(
             MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f)
         }
     )
-    
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -61,22 +80,28 @@ fun UploadScreen(
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = "📤 Upload VCF File",
+            text = buildAnnotatedString {
+                withStyle(style = MaterialTheme.typography.headlineLarge.copy(fontFamily = notoColorEmojiFontFamily).toSpanStyle()) {
+                    append("📤")
+                }
+                append(" ")
+                append("Upload VCF File")
+            },
             style = MaterialTheme.typography.headlineLarge,
             color = MaterialTheme.colorScheme.primary
         )
-        
+
         Spacer(modifier = Modifier.height(16.dp))
-        
+
         Text(
             text = "Upload a .vcf (vCard) file to extract birthdays and create calendar events",
             style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
-        
+
         Spacer(modifier = Modifier.height(32.dp))
-        
+
         // Drop zone / Upload area
         Box(
             modifier = Modifier
@@ -99,7 +124,7 @@ fun UploadScreen(
             ) {
                 Text(
                     text = "🎂",
-                    style = MaterialTheme.typography.displayLarge
+                    style = MaterialTheme.typography.displayLarge.copy(fontFamily = notoColorEmojiFontFamily)
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
@@ -118,9 +143,9 @@ fun UploadScreen(
                 )
             }
         }
-        
+
         Spacer(modifier = Modifier.height(24.dp))
-        
+
         Button(
             onClick = {
                 fileHandler.pickFile { content ->
@@ -137,9 +162,9 @@ fun UploadScreen(
                 style = MaterialTheme.typography.titleMedium
             )
         }
-        
+
         Spacer(modifier = Modifier.height(16.dp))
-        
+
         // Instructions
         Card(
             modifier = Modifier.fillMaxWidth(),
@@ -151,7 +176,13 @@ fun UploadScreen(
                 modifier = Modifier.padding(16.dp)
             ) {
                 Text(
-                    text = "ℹ️ How to use:",
+                    text = buildAnnotatedString {
+                        withStyle(style = MaterialTheme.typography.titleMedium.copy(fontFamily = notoColorEmojiFontFamily).toSpanStyle()) {
+                            append("ℹ️")
+                        }
+                        append(" ")
+                        append("How to use:")
+                    },
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onSecondaryContainer
                 )

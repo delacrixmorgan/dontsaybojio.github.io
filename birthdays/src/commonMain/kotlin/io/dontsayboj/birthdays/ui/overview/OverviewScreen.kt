@@ -29,11 +29,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import io.dontsayboj.birthdays.domain.model.Birthday
 import io.dontsayboj.birthdays.domain.model.EventConfig
 import io.dontsayboj.birthdays.presentation.BirthdaysIntent
+import io.dontsayboj.birthdays.theme.notoColorEmojiFontFamily
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -54,7 +57,13 @@ fun OverviewScreen(
     ) {
         item {
             Text(
-                text = "🎉 Birthdays Detected",
+                text = buildAnnotatedString {
+                    withStyle(style = MaterialTheme.typography.headlineLarge.copy(fontFamily = notoColorEmojiFontFamily).toSpanStyle()) {
+                        append("🎉")
+                    }
+                    append(" ")
+                    append("Birthdays Detected")
+                },
                 style = MaterialTheme.typography.headlineLarge,
                 color = MaterialTheme.colorScheme.primary
             )
