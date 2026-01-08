@@ -60,9 +60,9 @@ fun OverviewScreen(
         item {
             Text(
                 text = buildAnnotatedString {
-                    appendEmoji("🎉", MaterialTheme.typography.headlineLarge)
+                    appendEmoji("🎂", MaterialTheme.typography.headlineLarge)
                     append(" ")
-                    append("Birthdays Detected")
+                    append("Found ${birthdays.size} Birthdays!")
                 },
                 style = MaterialTheme.typography.headlineLarge,
                 color = MaterialTheme.colorScheme.primary
@@ -77,7 +77,7 @@ fun OverviewScreen(
                 )
             ) {
                 Text(
-                    text = "${birthdays.size} birthdays found",
+                    text = "Ready to create ${birthdays.size} birthday reminders",
                     style = MaterialTheme.typography.headlineMedium,
                     modifier = Modifier.padding(16.dp),
                     textAlign = TextAlign.Center,
@@ -88,7 +88,7 @@ fun OverviewScreen(
             Spacer(modifier = Modifier.height(24.dp))
 
             Text(
-                text = "Choose Calendar Format:",
+                text = "Choose Your Style",
                 style = MaterialTheme.typography.titleLarge,
                 color = MaterialTheme.colorScheme.onSurface
             )
@@ -125,7 +125,7 @@ fun OverviewScreen(
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = "Option 1: Include Age",
+                            text = "Show Ages (Single Year)",
                             style = MaterialTheme.typography.titleMedium
                         )
                     }
@@ -133,7 +133,7 @@ fun OverviewScreen(
                     Spacer(modifier = Modifier.height(8.dp))
 
                     Text(
-                        text = "Calendar events for a specific year with age",
+                        text = "Perfect if you like to see how old friends are turning. Creates events for one year at a time with ages like \"30th Birthday\".",
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -141,8 +141,8 @@ fun OverviewScreen(
                     Spacer(modifier = Modifier.height(8.dp))
 
                     Text(
-                        text = "Example: \"Aerith Gainsborough's 30th Birthday\"",
-                        style = MaterialTheme.typography.bodySmall,
+                        text = "💡 Choose this if you want to track everyone's milestone ages",
+                        style = MaterialTheme.typography.bodySmall.copy(fontStyle = androidx.compose.ui.text.font.FontStyle.Italic),
                         color = MaterialTheme.colorScheme.primary
                     )
 
@@ -221,7 +221,7 @@ fun OverviewScreen(
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = "Option 2: Recurring Event",
+                            text = "Yearly Reminders (No Ages)",
                             style = MaterialTheme.typography.titleMedium
                         )
                     }
@@ -229,7 +229,7 @@ fun OverviewScreen(
                     Spacer(modifier = Modifier.height(8.dp))
 
                     Text(
-                        text = "Yearly recurring events without age",
+                        text = "Set it once and forget it. Creates a yearly reminder for each birthday—no need to update anything ever again.",
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -237,8 +237,8 @@ fun OverviewScreen(
                     Spacer(modifier = Modifier.height(8.dp))
 
                     Text(
-                        text = "Example: \"Aerith Gainsborough's Birthday\" (repeats every year)",
-                        style = MaterialTheme.typography.bodySmall,
+                        text = "💡 Choose this if you just want the reminder without tracking ages",
+                        style = MaterialTheme.typography.bodySmall.copy(fontStyle = androidx.compose.ui.text.font.FontStyle.Italic),
                         color = MaterialTheme.colorScheme.primary
                     )
                 }
@@ -250,7 +250,7 @@ fun OverviewScreen(
         // Preview of birthdays
         item {
             Text(
-                text = "Preview:",
+                text = "Here's what your calendar will look like:",
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.fillMaxWidth()
             )
@@ -328,7 +328,7 @@ fun OverviewScreen(
                 shape = RoundedCornerShape(12.dp)
             ) {
                 Text(
-                    text = "Generate Calendar",
+                    text = "Create Calendar File",
                     style = MaterialTheme.typography.titleMedium
                 )
             }

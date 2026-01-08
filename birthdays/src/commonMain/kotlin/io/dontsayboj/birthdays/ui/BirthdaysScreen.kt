@@ -6,8 +6,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material3.Button
@@ -109,21 +111,63 @@ fun BirthdaysScreen(
                             ) {
                                 Text(
                                     text = buildAnnotatedString {
-                                        appendEmoji("❌", MaterialTheme.typography.headlineLarge)
+                                        appendEmoji("😕", MaterialTheme.typography.headlineLarge)
                                         append(" ")
-                                        append("Error")
+                                        append("Oops! Something Went Wrong")
                                     },
                                     style = MaterialTheme.typography.headlineLarge,
-                                    color = MaterialTheme.colorScheme.error
+                                    color = MaterialTheme.colorScheme.error,
+                                    textAlign = androidx.compose.ui.text.style.TextAlign.Center
                                 )
                                 Spacer(modifier = Modifier.height(16.dp))
                                 Text(
-                                    text = currentState.message,
-                                    style = MaterialTheme.typography.bodyLarge
+                                    text = "We couldn't read that file. Please make sure you're uploading a contacts file (.vcf format) that includes birthdays.",
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                                    color = MaterialTheme.colorScheme.onSurface
                                 )
                                 Spacer(modifier = Modifier.height(24.dp))
-                                Button(onClick = { viewModel.onAction(BirthdaysAction.StartAgain) }) {
-                                    Text("Try Again")
+                                
+                                // Help Card
+                                androidx.compose.material3.Card(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    colors = androidx.compose.material3.CardDefaults.cardColors(
+                                        containerColor = MaterialTheme.colorScheme.secondaryContainer
+                                    )
+                                ) {
+                                    Column(
+                                        modifier = Modifier.padding(16.dp)
+                                    ) {
+                                        Text(
+                                            text = buildAnnotatedString {
+                                                appendEmoji("💡", MaterialTheme.typography.titleMedium)
+                                                append(" ")
+                                                append("Tip:")
+                                            },
+                                            style = MaterialTheme.typography.titleMedium,
+                                            color = MaterialTheme.colorScheme.onSecondaryContainer
+                                        )
+                                        Spacer(modifier = Modifier.height(8.dp))
+                                        Text(
+                                            text = "Make sure your contacts file includes birthday information. Not all contacts may have birthdays saved.",
+                                            style = MaterialTheme.typography.bodyMedium,
+                                            color = MaterialTheme.colorScheme.onSecondaryContainer
+                                        )
+                                    }
+                                }
+                                
+                                Spacer(modifier = Modifier.height(24.dp))
+                                Button(
+                                    onClick = { viewModel.onAction(BirthdaysAction.StartAgain) },
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(56.dp),
+                                    shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp)
+                                ) {
+                                    Text(
+                                        text = "Try Another File",
+                                        style = MaterialTheme.typography.titleMedium
+                                    )
                                 }
                             }
                         }

@@ -55,7 +55,7 @@ fun DoneScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = "Your birthday calendar file is ready to download",
+            text = "Your birthday reminders are ready!",
             style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -84,45 +84,7 @@ fun DoneScreen(
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        // Information Card
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.secondaryContainer
-            )
-        ) {
-            Column(
-                modifier = Modifier.padding(16.dp)
-            ) {
-                Text(
-                    text = buildAnnotatedString {
-                        appendEmoji("ℹ️", MaterialTheme.typography.titleMedium)
-                        append(" ")
-                        append("Next Steps:")
-                    },
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = buildAnnotatedString {
-                        append(
-                            "1. Click the download button below\n" +
-                                    "2. Open the downloaded .ics file\n" +
-                                    "3. Import it into your calendar app\n" +
-                                    "4. Never miss a birthday again! "
-                        )
-                        appendEmoji("🥳", MaterialTheme.typography.bodyMedium)
-                    },
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                )
-            }
-        }
-
-        Spacer(modifier = Modifier.height(32.dp))
-
-        // Download Button
+        // Download Button (moved up)
         Button(
             onClick = {
                 fileHandler.downloadFile(icsContent, fileName)
@@ -136,12 +98,91 @@ fun DoneScreen(
             )
         ) {
             Text(
-                text = "⬇️ Download Calendar File",
+                text = "⬇️ Download Calendar File (.ics)",
                 style = MaterialTheme.typography.titleMedium
             )
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(32.dp))
+
+        // Import Instructions Card
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.secondaryContainer
+            )
+        ) {
+            Column(
+                modifier = Modifier.padding(16.dp)
+            ) {
+                Text(
+                    text = buildAnnotatedString {
+                        appendEmoji("ℹ️", MaterialTheme.typography.titleMedium)
+                        append(" ")
+                        append("How to import your calendar file (.ics)")
+                    },
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                
+                // Google Calendar Instructions
+                Text(
+                    text = "💻 For Google Calendar:",
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = "1. Open Google Calendar on your computer\n" +
+                            "2. Click the gear icon (⚙️) → Settings\n" +
+                            "3. Choose \"Import & Export\" from the left menu\n" +
+                            "4. Click \"Select file from your computer\"\n" +
+                            "5. Choose the downloaded file and select which calendar\n" +
+                            "6. Click \"Import\" and you're all set!",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer
+                )
+                
+                Spacer(modifier = Modifier.height(16.dp))
+                
+                // iPhone/iPad Instructions
+                Text(
+                    text = "📱 For iPhone/iPad:",
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = "1. Open the downloaded file\n" +
+                            "2. Tap \"Add All\" when prompted\n" +
+                            "3. Choose which calendar to add them to\n" +
+                            "4. Done! Check your Calendar app",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer
+                )
+                
+                Spacer(modifier = Modifier.height(16.dp))
+                
+                // Mac Calendar Instructions
+                Text(
+                    text = "🖥️ For Mac Calendar:",
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = "1. Open the Calendar app\n" +
+                            "2. Double-click the downloaded file\n" +
+                            "3. Choose which calendar to add them to\n" +
+                            "4. Click \"OK\"",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(24.dp))
 
         // Start Again Button
         OutlinedButton(
@@ -154,18 +195,9 @@ fun DoneScreen(
             shape = RoundedCornerShape(12.dp)
         ) {
             Text(
-                text = "🔄 Convert Another File",
+                text = "Start Over",
                 style = MaterialTheme.typography.titleMedium
             )
         }
-
-        Spacer(modifier = Modifier.height(32.dp))
-
-        // File info
-        Text(
-            text = "File: $fileName",
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
     }
 }

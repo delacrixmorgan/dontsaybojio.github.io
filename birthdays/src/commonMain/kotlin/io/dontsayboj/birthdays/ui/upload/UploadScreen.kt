@@ -83,20 +83,66 @@ fun UploadScreen(
             text = buildAnnotatedString {
                 appendEmoji("📤", MaterialTheme.typography.headlineLarge)
                 append(" ")
-                append("Upload VCF File")
+                append("Upload Your Contacts")
             },
             style = MaterialTheme.typography.headlineLarge,
             color = MaterialTheme.colorScheme.primary
         )
 
+        Spacer(modifier = Modifier.height(24.dp))
+
+        // Product Description Card
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f)
+            )
+        ) {
+            Column(
+                modifier = Modifier.padding(16.dp)
+            ) {
+                Text(
+                    text = "Missing Apple's automatic birthday reminders in Google Calendar?",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = "This tool recreates that experience. Upload your contacts and generate birthday events—complete with ages if you want them. Import once into any calendar app, and you're all set.",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                )
+            }
+        }
+
         Spacer(modifier = Modifier.height(16.dp))
 
-        Text(
-            text = "Upload a .vcf (vCard) file to extract birthdays and create calendar events",
-            style = MaterialTheme.typography.bodyLarge,
-            textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
+        // Why It's Different Card
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.tertiaryContainer
+            )
+        ) {
+            Column(
+                modifier = Modifier.padding(16.dp)
+            ) {
+                Text(
+                    text = "Why you'll love this:",
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.onTertiaryContainer
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = "🔒 Completely private – Everything happens in your browser\n" +
+                            "📅 Works with any calendar – Google, Apple, or any .ics-compatible app\n" +
+                            "♻️ Recurring option available – Set it once and let it repeat every year\n" +
+                            "💚 Free & open source – View on GitHub",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onTertiaryContainer
+                )
+            }
+        }
 
         Spacer(modifier = Modifier.height(32.dp))
 
@@ -127,9 +173,9 @@ fun UploadScreen(
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
                     text = if (isDragging) {
-                        "Drop your VCF file here!"
+                        "Drop your file here!"
                     } else {
-                        "Drag & drop a VCF file here\nor click the button below"
+                        "Drag your contacts file here (.vcf)\nor click below to browse"
                     },
                     style = MaterialTheme.typography.bodyMedium,
                     textAlign = TextAlign.Center,
@@ -156,14 +202,14 @@ fun UploadScreen(
             shape = RoundedCornerShape(12.dp)
         ) {
             Text(
-                text = "Select VCF File",
+                text = "Choose Contacts File (.vcf)",
                 style = MaterialTheme.typography.titleMedium
             )
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Instructions
+        // Export Instructions
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(
@@ -177,18 +223,49 @@ fun UploadScreen(
                     text = buildAnnotatedString {
                         appendEmoji("ℹ️", MaterialTheme.typography.titleMedium)
                         append(" ")
-                        append("How to use:")
+                        append("How to export your contacts")
                     },
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onSecondaryContainer
                 )
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(12.dp))
+                
                 Text(
-                    text = "1. Export contacts with birthdays from your device as a .vcf file\n" +
-                            "2. Select the file using the button above\n" +
-                            "3. Review detected birthdays and choose your preferred format\n" +
-                            "4. Download the generated calendar file",
-                    style = MaterialTheme.typography.bodyMedium,
+                    text = "📱 iPhone/iPad:",
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = "1. Go to iCloud.com and sign in\n" +
+                            "2. Open Contacts\n" +
+                            "3. Select the contacts you want (or Cmd/Ctrl+A for all)\n" +
+                            "4. Click the gear icon and choose \"Export vCard\"",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer
+                )
+                
+                Spacer(modifier = Modifier.height(12.dp))
+                
+                Text(
+                    text = "💻 Google Contacts:",
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = "1. Go to contacts.google.com\n" +
+                            "2. Select contacts or choose \"All contacts\"\n" +
+                            "3. Click \"Export\" and choose \"vCard (.vcf) format\"",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer
+                )
+                
+                Spacer(modifier = Modifier.height(12.dp))
+                
+                Text(
+                    text = "💡 Make sure to save as VCF file (.vcf format) — this is the standard contacts format.",
+                    style = MaterialTheme.typography.bodySmall.copy(fontStyle = androidx.compose.ui.text.font.FontStyle.Italic),
                     color = MaterialTheme.colorScheme.onSecondaryContainer
                 )
             }
