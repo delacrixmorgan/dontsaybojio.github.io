@@ -5,13 +5,17 @@ plugins {
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.composeHotReload)
+}
+
+compose.resources {
+    publicResClass = true
+    packageOfResClass = "dontsaybojio.birthdays.generated.resources"
+    generateResClass = always
 }
 
 kotlin {
-    js {
-        browser()
-        binaries.executable()
-    }
+    jvm()
 
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
@@ -27,12 +31,11 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
-            implementation(libs.androidx.lifecycle.viewmodelCompose)
-            implementation(libs.androidx.lifecycle.runtimeCompose)
-
-            implementation(libs.navigation.compose)
-            implementation(libs.jetbrains.serialization.json)
+            implementation(compose.materialIconsExtended)
+            implementation(libs.bundles.common.compose)
+            api(libs.kotlinx.datetime)
         }
+
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }

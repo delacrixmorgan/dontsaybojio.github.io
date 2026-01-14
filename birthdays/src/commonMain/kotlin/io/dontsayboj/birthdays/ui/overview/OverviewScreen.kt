@@ -1,0 +1,300 @@
+package io.dontsayboj.birthdays.ui.overview
+
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuAnchorType
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import io.dontsayboj.birthdays.domain.model.Birthday
+import io.dontsayboj.birthdays.domain.model.EventConfig
+import io.dontsayboj.birthdays.ui.BirthdaysAction
+import io.dontsayboj.birthdays.util.appendEmoji
+import io.dontsayboj.birthdays.util.currentYear
+import kotlinx.datetime.LocalDateTime
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun OverviewScreen(
+    birthdays: List<Birthday>,
+    selectedConfig: EventConfig,
+    selectedYear: Int,
+    onAction: (BirthdaysAction) -> Unit
+) {
+    var expanded by remember { mutableStateOf(false) }
+    val years = (LocalDateTime.currentYear()..LocalDateTime.currentYear() + 10).toList()
+
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(24.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        item {
+            Text(
+                text = buildAnnotatedString {
+                    appendEmoji("🎂", MaterialTheme.typography.headlineLarge)
+                    append(" ")
+                    append("Found ${birthdays.size} Birthdays!")
+                },
+                style = MaterialTheme.typography.headlineLarge,
+                color = MaterialTheme.colorScheme.primary
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.tertiaryContainer
+                )
+            ) {
+                Text(
+                    text = "Ready to create ${birthdays.size} birthday reminders",
+                    style = MaterialTheme.typography.headlineMedium,
+                    modifier = Modifier.padding(16.dp),
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.onTertiaryContainer
+                )
+            }
+            Spacer(modifier = Modifier.height(24.dp))
+            Text(
+                text = "Choose Your Style",
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+
+        // Option 1: With Age
+        item {
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(
+                    containerColor = if (selectedConfig is EventConfig.WithAge) {
+                        MaterialTheme.colorScheme.primaryContainer
+                    } else {
+                        MaterialTheme.colorScheme.surfaceVariant
+                    }
+                ),
+                onClick = { onAction(BirthdaysAction.OnEventConfigSelected(EventConfig.WithAge)) }
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        RadioButton(
+                            selected = selectedConfig is EventConfig.WithAge,
+                            onClick = { onAction(BirthdaysAction.OnEventConfigSelected(EventConfig.WithAge)) }
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = "Show Ages (Single Year)",
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = "Perfect if you like to see how old friends are turning. Creates events for one year at a time with ages like \"30th Birthday\".",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = buildAnnotatedString {
+                            appendEmoji("💡", MaterialTheme.typography.bodySmall)
+                            append(" ")
+                            append("Choose this if you want to track everyone's milestone ages")
+                        },
+                        style = MaterialTheme.typography.bodySmall.copy(fontStyle = androidx.compose.ui.text.font.FontStyle.Italic),
+                        color = MaterialTheme.colorScheme.primary
+                    )
+
+                    if (selectedConfig is EventConfig.WithAge) {
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        // Year Dropdown
+                        ExposedDropdownMenuBox(
+                            expanded = expanded,
+                            onExpandedChange = { expanded = !expanded }
+                        ) {
+                            OutlinedTextField(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .menuAnchor(
+                                        type = ExposedDropdownMenuAnchorType.PrimaryNotEditable,
+                                        enabled = true
+                                    ),
+                                value = selectedYear.toString(),
+                                readOnly = true,
+                                label = { Text("Select Year") },
+                                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+                                onValueChange = {},
+                            )
+                            ExposedDropdownMenu(
+                                expanded = expanded,
+                                onDismissRequest = { expanded = false }
+                            ) {
+                                years.forEach { year ->
+                                    DropdownMenuItem(
+                                        text = { Text(year.toString()) },
+                                        onClick = {
+                                            onAction(BirthdaysAction.OnYearSelected(year))
+                                            expanded = false
+                                        }
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+
+        // Option 2: Recurring
+        item {
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(
+                    containerColor = if (selectedConfig is EventConfig.Recurring) {
+                        MaterialTheme.colorScheme.primaryContainer
+                    } else {
+                        MaterialTheme.colorScheme.surfaceVariant
+                    }
+                ),
+                onClick = { onAction(BirthdaysAction.OnEventConfigSelected(EventConfig.Recurring)) }
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        RadioButton(
+                            selected = selectedConfig is EventConfig.Recurring,
+                            onClick = { onAction(BirthdaysAction.OnEventConfigSelected(EventConfig.Recurring)) }
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = "Yearly Reminders (No Ages)",
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = "Set it once and forget it. Creates a yearly reminder for each birthday—no need to update anything ever again.",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = buildAnnotatedString {
+                            appendEmoji("💡", MaterialTheme.typography.bodySmall)
+                            append(" ")
+                            append("Choose this if you just want the reminder without tracking ages")
+                        },
+                        style = MaterialTheme.typography.bodySmall.copy(fontStyle = androidx.compose.ui.text.font.FontStyle.Italic),
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.height(32.dp))
+        }
+
+        // Preview of birthdays
+        item {
+            Text(
+                text = "Here's what your calendar will look like:",
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.fillMaxWidth()
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+        }
+
+        items(birthdays.take(5)) { birthday ->
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 4.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
+            ) {
+                Column(modifier = Modifier.padding(12.dp)) {
+                    val summary = when (selectedConfig) {
+                        is EventConfig.WithAge -> {
+                            if (birthday.hasYear()) {
+                                val age = birthday.calculateAge(selectedYear)
+                                val suffix = when {
+                                    age!! % 100 in 11..13 -> "th"
+                                    age % 10 == 1 -> "st"
+                                    age % 10 == 2 -> "nd"
+                                    age % 10 == 3 -> "rd"
+                                    else -> "th"
+                                }
+                                "${birthday.name}'s ${age}${suffix} Birthday"
+                            } else {
+                                "${birthday.name}'s Birthday"
+                            }
+                        }
+                        is EventConfig.Recurring -> "${birthday.name}'s Birthday"
+                    }
+                    Text(
+                        text = summary,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                    )
+                    Text(
+                        text = "${birthday.day}/${birthday.month}/${birthday.year}",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.7f)
+                    )
+                }
+            }
+        }
+        if (birthdays.size > 5) {
+            item {
+                Text(
+                    text = "... and ${birthdays.size - 5} more",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(8.dp)
+                )
+            }
+        }
+        item {
+            Spacer(modifier = Modifier.height(24.dp))
+            Button(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp),
+                onClick = { onAction(BirthdaysAction.GenerateCalendar) },
+                shape = RoundedCornerShape(12.dp)
+            ) {
+                Text(
+                    text = "Create Calendar File",
+                    style = MaterialTheme.typography.titleMedium
+                )
+            }
+            Spacer(modifier = Modifier.height(24.dp))
+        }
+    }
+}
