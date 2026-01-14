@@ -15,7 +15,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.LinkAnnotation
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withLink
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -36,6 +39,20 @@ fun LandingScreen(
                     style = MaterialTheme.typography.displayLarge,
                     textAlign = TextAlign.Center
                 )
+                Spacer(Modifier.height(16.dp))
+                Text(
+                    text = "Making magic happen in Kotlin",
+                    style = MaterialTheme.typography.headlineSmall,
+                    textAlign = TextAlign.Center
+                )
+                Spacer(Modifier.height(4.dp))
+                Text(
+                    text = buildAnnotatedString {
+                        withLink(LinkAnnotation.Url(url = "https://bsky.app/hashtag/MakeGoodThings")) { append("#MakeGoodThings") }
+                    },
+                    style = MaterialTheme.typography.titleLarge,
+                    textAlign = TextAlign.Center
+                )
                 Spacer(Modifier.height(24.dp))
                 Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                     Button(onClick = { onNavigateToBirthdays() }) {
@@ -44,7 +61,10 @@ fun LandingScreen(
                 }
                 Spacer(Modifier.height(48.dp))
                 Text(
-                    "Made by Delacrix Morgan",
+                    text = buildAnnotatedString {
+                        append("Made by ")
+                        withLink(LinkAnnotation.Url(url = "https://github.com/delacrixmorgan")) { append("Delacrix Morgan") }
+                    },
                     textAlign = TextAlign.Center
                 )
             }

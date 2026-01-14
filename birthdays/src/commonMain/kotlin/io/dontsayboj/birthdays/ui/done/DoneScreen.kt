@@ -9,7 +9,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -24,21 +26,22 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import io.dontsayboj.birthdays.platform.FileHandler
-import io.dontsayboj.birthdays.ui.BirthdaysAction
 import io.dontsayboj.birthdays.theme.notoColorEmojiFontFamily
+import io.dontsayboj.birthdays.ui.BirthdaysAction
 import io.dontsayboj.birthdays.util.appendEmoji
 
 @Composable
 fun DoneScreen(
     icsContent: String,
     fileName: String,
-    onIntent: (BirthdaysAction) -> Unit,
+    onAction: (BirthdaysAction) -> Unit,
     fileHandler: FileHandler
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(24.dp),
+            .padding(24.dp)
+            .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -51,24 +54,17 @@ fun DoneScreen(
             style = MaterialTheme.typography.headlineLarge,
             color = MaterialTheme.colorScheme.primary
         )
-
         Spacer(modifier = Modifier.height(16.dp))
-
         Text(
             text = "Your birthday reminders are ready!",
             style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
-
         Spacer(modifier = Modifier.height(32.dp))
-
-        // Success Icon
         Card(
             modifier = Modifier.size(120.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer
-            ),
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
             shape = RoundedCornerShape(60.dp)
         ) {
             Box(
@@ -81,40 +77,43 @@ fun DoneScreen(
                 )
             }
         }
-
         Spacer(modifier = Modifier.height(32.dp))
-
-        // Download Button (moved up)
         Button(
-            onClick = {
-                fileHandler.downloadFile(icsContent, fileName)
-            },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp),
+            onClick = { fileHandler.downloadFile(icsContent, fileName) },
             shape = RoundedCornerShape(12.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.primary
-            )
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
         ) {
             Text(
-                text = "⬇️ Download Calendar File (.ics)",
+                text = buildAnnotatedString {
+                    appendEmoji("⬇️", MaterialTheme.typography.titleMedium)
+                    append(" ")
+                    append("Download Calendar File (.ics)")
+                },
                 style = MaterialTheme.typography.titleMedium
             )
         }
-
+        Spacer(modifier = Modifier.height(16.dp))
+        OutlinedButton(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(56.dp),
+            onClick = { onAction(BirthdaysAction.StartAgain) },
+            shape = RoundedCornerShape(12.dp)
+        ) {
+            Text(
+                text = "Start Over",
+                style = MaterialTheme.typography.titleMedium
+            )
+        }
         Spacer(modifier = Modifier.height(32.dp))
-
-        // Import Instructions Card
         Card(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.secondaryContainer
-            )
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
         ) {
-            Column(
-                modifier = Modifier.padding(16.dp)
-            ) {
+            Column(modifier = Modifier.padding(16.dp)) {
                 Text(
                     text = buildAnnotatedString {
                         appendEmoji("ℹ️", MaterialTheme.typography.titleMedium)
@@ -125,8 +124,6 @@ fun DoneScreen(
                     color = MaterialTheme.colorScheme.onSecondaryContainer
                 )
                 Spacer(modifier = Modifier.height(16.dp))
-                
-                // Google Calendar Instructions
                 Text(
                     text = "💻 For Google Calendar:",
                     style = MaterialTheme.typography.titleSmall,
@@ -143,12 +140,15 @@ fun DoneScreen(
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSecondaryContainer
                 )
-                
+
                 Spacer(modifier = Modifier.height(16.dp))
-                
-                // iPhone/iPad Instructions
+
                 Text(
-                    text = "📱 For iPhone/iPad:",
+                    text = buildAnnotatedString {
+                        appendEmoji("📱", MaterialTheme.typography.titleSmall)
+                        append(" ")
+                        append("For iPhone/iPad:")
+                    },
                     style = MaterialTheme.typography.titleSmall,
                     color = MaterialTheme.colorScheme.onSecondaryContainer
                 )
@@ -161,12 +161,13 @@ fun DoneScreen(
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSecondaryContainer
                 )
-                
                 Spacer(modifier = Modifier.height(16.dp))
-                
-                // Mac Calendar Instructions
                 Text(
-                    text = "🖥️ For Mac Calendar:",
+                    text = buildAnnotatedString {
+                        appendEmoji("🖥️", MaterialTheme.typography.titleSmall)
+                        append(" ")
+                        append("For Mac Calendar:")
+                    },
                     style = MaterialTheme.typography.titleSmall,
                     color = MaterialTheme.colorScheme.onSecondaryContainer
                 )
@@ -180,24 +181,6 @@ fun DoneScreen(
                     color = MaterialTheme.colorScheme.onSecondaryContainer
                 )
             }
-        }
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        // Start Again Button
-        OutlinedButton(
-            onClick = {
-                onIntent(BirthdaysAction.StartAgain)
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp),
-            shape = RoundedCornerShape(12.dp)
-        ) {
-            Text(
-                text = "Start Over",
-                style = MaterialTheme.typography.titleMedium
-            )
         }
     }
 }

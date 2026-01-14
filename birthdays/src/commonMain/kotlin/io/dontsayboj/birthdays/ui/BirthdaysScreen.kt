@@ -13,6 +13,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -26,8 +28,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withLink
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import io.dontsayboj.birthdays.platform.FileHandler
@@ -45,7 +50,6 @@ fun BirthdaysScreen(
     val viewModel: BirthdaysViewModel = viewModel { BirthdaysViewModel() }
     val state by viewModel.state.collectAsState()
     val fileHandler = remember { FileHandler() }
-
     BirthdaysTheme {
         Scaffold(
             topBar = {
@@ -70,38 +74,34 @@ fun BirthdaysScreen(
             content = { paddingValues ->
                 Box(
                     modifier = Modifier
+                        .fillMaxSize()
                         .background(MaterialTheme.colorScheme.background)
                         .padding(paddingValues)
-                        .fillMaxSize()
                 ) {
                     when (val currentState = state) {
                         is BirthdaysUiState.Upload -> {
                             UploadScreen(
-                                onIntent = viewModel::onAction,
-                                fileHandler = fileHandler
+                                fileHandler = fileHandler,
+                                onAction = viewModel::onAction
                             )
                         }
-
                         is BirthdaysUiState.Overview -> {
                             OverviewScreen(
                                 birthdays = currentState.birthdays,
                                 selectedConfig = currentState.selectedConfig,
                                 selectedYear = currentState.selectedYear,
-                                onIntent = viewModel::onAction
+                                onAction = viewModel::onAction
                             )
                         }
-
                         is BirthdaysUiState.Done -> {
                             DoneScreen(
                                 icsContent = currentState.icsContent,
                                 fileName = currentState.fileName,
-                                onIntent = viewModel::onAction,
-                                fileHandler = fileHandler
+                                fileHandler = fileHandler,
+                                onAction = viewModel::onAction
                             )
                         }
-
                         is BirthdaysUiState.Error -> {
-                            // Error state
                             Column(
                                 modifier = Modifier
                                     .fillMaxSize()
@@ -117,27 +117,21 @@ fun BirthdaysScreen(
                                     },
                                     style = MaterialTheme.typography.headlineLarge,
                                     color = MaterialTheme.colorScheme.error,
-                                    textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                                    textAlign = TextAlign.Center
                                 )
                                 Spacer(modifier = Modifier.height(16.dp))
                                 Text(
                                     text = "We couldn't read that file. Please make sure you're uploading a contacts file (.vcf format) that includes birthdays.",
                                     style = MaterialTheme.typography.bodyLarge,
-                                    textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                                    textAlign = TextAlign.Center,
                                     color = MaterialTheme.colorScheme.onSurface
                                 )
                                 Spacer(modifier = Modifier.height(24.dp))
-                                
-                                // Help Card
-                                androidx.compose.material3.Card(
+                                Card(
                                     modifier = Modifier.fillMaxWidth(),
-                                    colors = androidx.compose.material3.CardDefaults.cardColors(
-                                        containerColor = MaterialTheme.colorScheme.secondaryContainer
-                                    )
+                                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
                                 ) {
-                                    Column(
-                                        modifier = Modifier.padding(16.dp)
-                                    ) {
+                                    Column(modifier = Modifier.padding(16.dp)) {
                                         Text(
                                             text = buildAnnotatedString {
                                                 appendEmoji("💡", MaterialTheme.typography.titleMedium)
@@ -155,14 +149,14 @@ fun BirthdaysScreen(
                                         )
                                     }
                                 }
-                                
+
                                 Spacer(modifier = Modifier.height(24.dp))
                                 Button(
-                                    onClick = { viewModel.onAction(BirthdaysAction.StartAgain) },
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .height(56.dp),
-                                    shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp)
+                                    shape = RoundedCornerShape(12.dp),
+                                    onClick = { viewModel.onAction(BirthdaysAction.StartAgain) }
                                 ) {
                                     Text(
                                         text = "Try Another File",
@@ -173,7 +167,19 @@ fun BirthdaysScreen(
                         }
                     }
                 }
-            }
+            },
+            bottomBar = {
+                Text(
+                    modifier = Modifier.fillMaxWidth().padding(8.dp),
+                    style = MaterialTheme.typography.bodySmall,
+                    textAlign = TextAlign.Center,
+                    text = buildAnnotatedString {
+                        withLink(LinkAnnotation.Url(url = "https://github.com/delacrixmorgan/dontsaybojio-kmp/tree/main/birthdays")) { append("Birthdays") }
+                        append(" by ")
+                        withLink(LinkAnnotation.Url(url = "https://github.com/delacrixmorgan")) { append("Delacrix Morgan") }
+                    },
+                )
+            },
         )
     }
 }
