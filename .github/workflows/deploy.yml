@@ -33,8 +33,12 @@ jobs:
       - name: Build wasmJs distribution
         run: ./gradlew :composeApp:wasmJsBrowserDistribution --no-daemon
 
-      - name: Copy CNAME file
+      - name: Setup GitHub Pages SPA routing
         run: |
+          # Copy index.html to 404.html for GitHub Pages SPA routing
+          cp composeApp/build/dist/wasmJs/productionExecutable/index.html composeApp/build/dist/wasmJs/productionExecutable/404.html
+          
+          # Copy CNAME if it exists
           if [ -f public/CNAME ]; then
             cp public/CNAME composeApp/build/dist/wasmJs/productionExecutable/
           fi
