@@ -1,4 +1,4 @@
-# 🎂 Birthdays — Contacts to Calendar Events Calendar
+# 🎂 Birthdays — Contacts to Calendar Events
 
 A Kotlin Multiplatform (KMP) WASM application that converts VCF (vCard) files to ICS (iCalendar) format, specifically extracting birthdays and creating calendar events.
 
