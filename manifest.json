@@ -3,10 +3,12 @@
     "github_username": "delacrixmorgan",
     "site_title": "Don't Say Bojo",
     "site_description": "Projects by delacrixmorgan",
-    "bluesky_did": "did:plc:mcoftfgah4mk2ndt5qrl4sap"
+    "bluesky_did": "did:plc:mcoftfgah4mk2ndt5qrl4sap",
+    "tagline": "Building things on the internet.",
+    "bluesky_handle": "morgan.dontsaybojio.com"
   },
   "redirects": [
-    { "slug": "whoadunit" },
-    { "slug": "birthdays" }
+    { "slug": "whoadunit", "label": "Whoadunit" },
+    { "slug": "birthdays", "label": "Birthdays" }
   ]
 }

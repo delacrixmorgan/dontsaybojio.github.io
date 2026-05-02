@@ -56,9 +56,24 @@ function redirectPage(label, targetUrl) {
 }
 
 function rootPage(config, redirects) {
-  const items = redirects.map(({ slug, label, targetUrl }) =>
-    `    <li><a href="/${slug}/">${label}</a><span class="target"> → ${targetUrl}</span></li>`
+  const cards = redirects.map(({ slug, label }) => `
+    <a class="card" href="/${slug}/">
+      <span class="card-label">${label}</span>
+      <span class="card-arrow">→</span>
+    </a>`
   ).join('\n');
+
+  const githubUrl = `https://github.com/${config.github_username}`;
+  const blueskyUrl = config.bluesky_handle
+    ? `https://bsky.app/profile/${config.bluesky_handle}`
+    : null;
+
+  const socialLinks = [
+    `<a class="social" href="${githubUrl}" target="_blank" rel="noopener noreferrer">GitHub</a>`,
+    blueskyUrl
+      ? `<a class="social" href="${blueskyUrl}" target="_blank" rel="noopener noreferrer">Bluesky</a>`
+      : '',
+  ].filter(Boolean).join('\n    ');
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -68,23 +83,159 @@ function rootPage(config, redirects) {
   <title>${config.site_title}</title>
   <meta name="description" content="${config.site_description}">
   <style>
-    body { font-family: system-ui, sans-serif; max-width: 600px; margin: 4rem auto;
-           padding: 0 1.5rem; background: #0d1117; color: #e6edf3; }
-    h1 { font-size: 1.5rem; margin-bottom: 0.25rem; }
-    p  { color: #8b949e; margin-top: 0; }
-    ul { list-style: none; padding: 0; }
-    li { margin: 0.75rem 0; }
-    a  { color: #58a6ff; text-decoration: none; font-size: 1.1rem; }
-    a:hover { text-decoration: underline; }
-    .target { color: #8b949e; font-size: 0.85rem; margin-left: 0.5rem; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: #0d1117;
+      color: #e6edf3;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      padding: 5rem 1.5rem 4rem;
+      max-width: 720px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .eyebrow {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #a78bfa;
+      margin-bottom: 1.25rem;
+    }
+
+    h1 {
+      font-size: clamp(2.5rem, 8vw, 5rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+      color: #e6edf3;
+      margin-bottom: 1.25rem;
+    }
+
+    h1 span { color: #a78bfa; }
+
+    .tagline {
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      color: #8b949e;
+      line-height: 1.6;
+      max-width: 46ch;
+      margin-bottom: 2.25rem;
+    }
+
+    .social-row { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+
+    .social {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.45rem 1rem;
+      border: 1.5px solid #a78bfa;
+      border-radius: 999px;
+      color: #a78bfa;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      letter-spacing: 0.01em;
+      transition: background 150ms ease, color 150ms ease;
+    }
+
+    .social:hover { background: #a78bfa; color: #0d1117; }
+
+    main {
+      flex: 1;
+      padding: 0 1.5rem 5rem;
+      max-width: 720px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #8b949e;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid #21262d;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1rem;
+    }
+
+    .card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 1.5rem;
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 12px;
+      text-decoration: none;
+      color: #e6edf3;
+      transition: transform 150ms ease, box-shadow 150ms ease, border-color 150ms ease;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 32px rgba(167, 139, 250, 0.12);
+      border-color: #a78bfa;
+    }
+
+    .card-label { font-size: 1.05rem; font-weight: 600; letter-spacing: -0.01em; }
+
+    .card-arrow {
+      font-size: 1.1rem;
+      color: #a78bfa;
+      transition: transform 150ms ease;
+    }
+
+    .card:hover .card-arrow { transform: translateX(3px); }
+
+    footer {
+      padding: 1.5rem;
+      text-align: center;
+      font-size: 0.75rem;
+      color: #484f58;
+      border-top: 1px solid #21262d;
+    }
+
+    @media (max-width: 480px) {
+      header { padding: 3.5rem 1.25rem 3rem; }
+      main   { padding: 0 1.25rem 4rem; }
+      .cards { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
-  <h1>${config.site_title}</h1>
-  <p>${config.site_description}</p>
-  <ul>
-${items}
-  </ul>
+  <header>
+    <p class="eyebrow">Portfolio</p>
+    <h1>${config.site_title.replace("Don't", "<span>Don't</span>")}</h1>
+    <p class="tagline">${config.tagline ?? config.site_description}</p>
+    <nav class="social-row" aria-label="Social links">
+    ${socialLinks}
+    </nav>
+  </header>
+
+  <main>
+    <p class="section-title">Projects</p>
+    <div class="cards">
+${cards}
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; ${new Date().getFullYear()} ${config.github_username}</p>
+  </footer>
 </body>
 </html>
 `;
