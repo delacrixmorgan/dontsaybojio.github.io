@@ -4,8 +4,8 @@
     "site_title": "Don't Say Bojo",
     "site_description": "Projects by delacrixmorgan",
     "bluesky_did": "did:plc:mcoftfgah4mk2ndt5qrl4sap",
-    "tagline": "Building things on the internet.",
-    "bluesky_handle": "morgan.dontsaybojio.com"
+    "tagline": "Making magic happen in Kotlin.",
+    "bluesky_handle": "dontsaybojio.com"
   },
   "redirects": [
     { "slug": "whoadunit", "label": "Whoadunit" },
