@@ -2,7 +2,8 @@
   "config": {
     "github_username": "delacrixmorgan",
     "site_title": "Don't Say Bojo",
-    "site_description": "Projects by delacrixmorgan"
+    "site_description": "Projects by delacrixmorgan",
+    "bluesky_did": "did:plc:mcoftfgah4mk2ndt5qrl4sap"
   },
   "redirects": [
     { "slug": "whoadunit" },

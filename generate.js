@@ -11,6 +11,11 @@ mkdirSync(outDir, { recursive: true });
 writeFileSync(join(outDir, 'CNAME'), 'dontsaybojio.com');
 writeFileSync(join(outDir, '.nojekyll'), '');
 
+if (config.bluesky_did) {
+  mkdirSync(join(outDir, '.well-known'), { recursive: true });
+  writeFileSync(join(outDir, '.well-known', 'atproto-did'), config.bluesky_did);
+}
+
 const resolved = redirects.map(entry => ({
   slug: entry.slug,
   label: entry.label ?? entry.slug,
