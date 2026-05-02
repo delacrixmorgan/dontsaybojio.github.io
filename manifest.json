@@ -1,0 +1,11 @@
+{
+  "config": {
+    "github_username": "delacrixmorgan",
+    "site_title": "Don't Say Bojo",
+    "site_description": "Projects by delacrixmorgan"
+  },
+  "redirects": [
+    { "slug": "whoadunit" },
+    { "slug": "birthdays" }
+  ]
+}
