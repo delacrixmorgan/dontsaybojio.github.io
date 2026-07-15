@@ -9,6 +9,8 @@
   },
   "redirects": [
     { "slug": "whoadunit", "label": "Whoadunit" },
-    { "slug": "birthdays", "label": "Birthdays" }
+    { "slug": "birthdays", "label": "Birthdays" },
+    { "slug": "archive-www", "label": "Archive" },
+    { "slug": "manifest-www", "label": "Manifest" }
   ]
 }
