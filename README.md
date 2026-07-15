@@ -8,19 +8,20 @@ GitHub Pages redirect hub for `dontsaybojio.com`. Each entry in `manifest.json` 
 
 ## Adding a redirect
 
-Edit `manifest.json` and add a slug to the `redirects` array:
+Edit `manifest.json` and add an entry to the `redirects` array. Each entry specifies a
+`slug`, a `label`, and the target `url`:
 
 ```json
-{ "slug": "newproject" }
+{ "slug": "blog", "label": "Blog", "url": "https://medium.com/@delacrixmorgan" }
 ```
 
-This maps `dontsaybojio.com/newproject` → `https://delacrixmorgan.github.io/newproject.github.io/`.
+This maps `dontsaybojio.com/blog` → the given `url`. Keeping `url` explicit on every entry
+means the target is always visible and doesn't depend on repo naming.
 
-For a custom target URL:
-
-```json
-{ "slug": "blog", "url": "https://medium.com/@delacrixmorgan", "label": "Blog" }
-```
+If `url` is omitted, `generate.js` falls back to
+`https://delacrixmorgan.github.io/{slug}.github.io/` — which only resolves when the GitHub
+repo is named exactly `{slug}.github.io`. Prefer an explicit `url` rather than relying on
+this fallback.
 
 Push to `main` — the workflow handles the rest.
 
