@@ -11,6 +11,7 @@
     { "slug": "whoadunit", "label": "Whoadunit", "url": "https://delacrixmorgan.github.io/whoadunit.github.io/" },
     { "slug": "birthdays", "label": "Birthdays", "url": "https://delacrixmorgan.github.io/birthdays.github.io/" },
     { "slug": "archive", "label": "Archive", "url": "https://delacrixmorgan.github.io/reformati-www/" },
-    { "slug": "manifest", "label": "Manifest", "url": "https://delacrixmorgan.github.io/manifest-www/" }
+    { "slug": "manifest", "label": "Manifest", "url": "https://delacrixmorgan.github.io/manifest-www/" },
+    { "slug": "reformati", "label": "Reformati", "url": "https://delacrixmorgan.github.io/reformati-www/" }
   ]
 }
